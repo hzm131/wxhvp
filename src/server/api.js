@@ -1,16 +1,22 @@
 
 class Api {
   constructor(baseUrl) {
+    wx.getStorage({
+      key: 'session_id',
+      success (res) {
+        console.log("获取到",res.data)
+        this.session_id = res.data
+      },
+    });
     this.baseUrl = baseUrl;
-    this.session = '';
-    this.corpID = null;
+    this.session_id = '';
   }
 
   fetch({ method, path, header = {}, body = {} }) {
-    if (this.session) {
+    if (this.session_id) {
       header = {
         ...header,
-        'sessionID': this.session,
+        'session_id': this.session_id,
       }
     }
     return new Promise((resolve,reject)=>{
@@ -18,7 +24,6 @@ class Api {
         url:  this.baseUrl + path,
         data:{
           ...body,
-          id:this.corpID
         },
         method,
         header,
@@ -48,9 +53,19 @@ class Api {
               })
               .then(res => {
                   console.log("后台",res)
+                if(res.data.status === 200){
+                  const session_id = res.data.data.session_id;
+                  wx.setStorage({
+                    key:"session_id",
+                    data:session_id
+                  })
+                  resolve(res.data.data)
+                }else{
+                  reject(res.err)
+                }
               })
           } else {
-            reject(res.errMsg)
+            reject(res.err)
           }
         }
       })
