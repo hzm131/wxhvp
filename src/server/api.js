@@ -38,29 +38,17 @@ class Api {
         success: res => {
           console.log("code",res)
           if (res.code) {
-            /*api
+            api
               .fetch({
                 method:"POST",
-                path:`/nien-0.0.1-SNAPSHOT/wxmplogin`,
-                header:{
-                  'content-type': 'application/x-www-form-urlencoded'
-                },
+                path:'/wx/login',
                 body:{
                   code:res.code,
-                  admincode:'pm'
                 }
               })
               .then(res => {
-                if (res.statusCode === 200 && res.errMsg === 'request:ok' && !res.data.errMsg) {
-                  console.log(res);
-                  this.session = res.data.sessionID;
-                  this.corpID = res.data.corpId;
-
-                  return resolve(res.data)
-                } else {
-                  return reject(res.data.errMsg)
-                }
-              })*/
+                  console.log("后台",res)
+              })
           } else {
             reject(res.errMsg)
           }
@@ -102,7 +90,7 @@ class Api {
   }
 }
 
-const api = new Api('http:127.0.0.1:3000');
+const api = new Api('http://127.0.0.1:3000');
 global.api = api;
 
 export default api

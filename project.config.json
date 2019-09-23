@@ -4,10 +4,13 @@
 	"description": "",
 	"appid": "wx3103bc03ab579a65",
 	"setting": {
-		"urlCheck": true,
+		"urlCheck": false,
 		"es6": false,
 		"postcss": false,
-		"minified": false
+		"minified": false,
+		"newFeature": true,
+		"autoAudits": false,
+		"checkInvalidKey": true
 	},
 	"compileType": "miniprogram",
 	"simulatorType": "wechat",
