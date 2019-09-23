@@ -1,5 +1,6 @@
 import Taro, { Component } from '@tarojs/taro'
 import { View, Text } from '@tarojs/components'
+import api from '../../server/api'
 import './index.less'
 
 export default class Index extends Component {
@@ -10,7 +11,11 @@ export default class Index extends Component {
 
   componentWillMount () { }
 
-  componentDidMount () { }
+  componentDidMount () {
+    api.login().then((res)=>{
+      console.log("res",res)
+    })
+  }
 
   componentWillUnmount () { }
 
