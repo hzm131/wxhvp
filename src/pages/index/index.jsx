@@ -12,7 +12,7 @@ export default class Index extends Component {
   componentWillMount () { }
 
   componentDidMount () {
-    wx.getStorage({
+    /*wx.getStorage({
       key: 'session_id',
       success (res) {
         console.log(res)
@@ -26,15 +26,10 @@ export default class Index extends Component {
           },
           fail () {
             // session_key 已经失效，需要重新执行登录流程
-            api.login().then((res)=>{
-              //登录成功
-            },(res)=>{
-              //登录失败
-            })
           }
         })
       }
-    })
+    })*/
   }
 
   componentWillUnmount () { }
@@ -45,13 +40,22 @@ export default class Index extends Component {
 
   onGotUserInfo = (res)=>{
     console.log("授权",res)
+    const userInfo = res.target.userInfo;
+    api.login({
+      userInfo
+    })
   };
-
+  onQuery = ()=>{
+    api.get("/ttt/a").then(res =>{
+      console.log("ttt",res)
+    })
+  }
   render () {
     return (
       <View className='index'>
         <Text>Hello world!</Text>
-        <Button  openType='getUserInfo'  onGetUserInfo={this.onGotUserInfo}>获取</Button>
+        <Button  openType='getUserInfo'  onGetUserInfo={this.onGotUserInfo}>进入小程序</Button>
+        <Button    onClick={this.onQuery}>测试</Button>
       </View>
     )
   }

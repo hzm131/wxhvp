@@ -1,22 +1,23 @@
 
 class Api {
   constructor(baseUrl) {
-    wx.getStorage({
-      key: 'session_id',
-      success (res) {
-        console.log("获取到",res.data)
-        this.session_id = res.data
-      },
-    });
     this.baseUrl = baseUrl;
-    this.session_id = '';
+    this.sessionId = '';
+    wx.getStorage({
+      key: 'sessionId',
+      success: (res)=> {
+        if(res.data){
+          this.sessionId = res.data;
+        }
+      },
+      fail :()=> {}
+    });
   }
-
-  fetch({ method, path, header = {}, body = {} }) {
-    if (this.session_id) {
+  fetch ({ method, path, header = {}, body = {} }){
+    if (this.sessionId) {
       header = {
         ...header,
-        'session_id': this.session_id,
+        'sessionId': this.sessionId,
       }
     }
     return new Promise((resolve,reject)=>{
@@ -37,7 +38,7 @@ class Api {
     })
   }
 
-  login() {
+  login({userInfo} = {}) {
     return new Promise((resolve, reject) => {
       wx.login({
         success: res => {
@@ -49,15 +50,16 @@ class Api {
                 path:'/wx/login',
                 body:{
                   code:res.code,
+                  ...userInfo
                 }
               })
               .then(res => {
                   console.log("后台",res)
                 if(res.data.status === 200){
-                  const session_id = res.data.data.session_id;
+                  const sessionId = res.data.sessionId;
                   wx.setStorage({
-                    key:"session_id",
-                    data:session_id
+                    key:"sessionId",
+                    data:sessionId
                   })
                   resolve(res.data.data)
                 }else{
