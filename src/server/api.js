@@ -3,16 +3,8 @@ class Api {
   constructor(baseUrl) {
     this.baseUrl = baseUrl;
     this.sessionId = '';
-    wx.getStorage({
-      key: 'sessionId',
-      success: (res)=> {
-        if(res.data){
-          this.sessionId = res.data;
-        }
-      },
-      fail :()=> {}
-    });
   }
+
   fetch ({ method, path, header = {}, body = {} }){
     if (this.sessionId) {
       header = {
@@ -75,6 +67,8 @@ class Api {
   }
 
   get(path, body) {
+    const sessionId = wx.getStorageSync('sessionId');
+    this.sessionId = sessionId;
     return this.fetch({
       method: 'GET',
       path,
@@ -83,6 +77,8 @@ class Api {
   }
 
   post(path, body) {
+    const sessionId = wx.getStorageSync('sessionId');
+    this.sessionId = sessionId;
     return this.fetch({
       method: 'POST',
       path,
@@ -91,6 +87,8 @@ class Api {
   }
 
   put(path, body) {
+    const sessionId = wx.getStorageSync('sessionId');
+    this.sessionId = sessionId;
     return this.fetch({
       method: 'PUT',
       path,
@@ -99,6 +97,8 @@ class Api {
   }
 
   delete(path, body) {
+    const sessionId = wx.getStorageSync('sessionId');
+    this.sessionId = sessionId;
     return this.fetch({
       method: 'DELETE',
       path,
@@ -107,7 +107,6 @@ class Api {
   }
 }
 
-const api = new Api('http://192.168.2.166:3000');
-global.api = api;
+const api = new Api('http://169.254.78.223:3000');
 
 export default api

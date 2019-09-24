@@ -1,6 +1,6 @@
 import Taro, { Component } from '@tarojs/taro'
 import { View, Text,Button } from '@tarojs/components'
-import api from '../../server/api'
+import api  from '../../server/api'
 import './index.less'
 
 export default class Index extends Component {
@@ -39,7 +39,11 @@ export default class Index extends Component {
   componentDidHide () { }
 
   onGotUserInfo = (res)=>{
-    console.log("授权",res)
+    console.log("授权",)
+    if(res.detail.errMsg ==="getUserInfo:fail auth deny"){
+      //取消授权
+      return
+    }
     const userInfo = res.target.userInfo;
     api.login({
       userInfo
